@@ -16,7 +16,7 @@ Isn't there another project that does the same thing?
 
 -- I don't know, which is why I made this one, but please send me its name so I can post it here.
 
-Can you add feature X?
+Can you add a feature I would like to see?
 
 -- It's possible, please create an issue and we can discuss it.
 
@@ -36,15 +36,15 @@ Below are the options that you can put in your .vimrc to overwrite the defaults 
 
 A list of glob file patterns which will be searched for:
 
-    let g:scavenger\_patterns = ['project.vim', 'rc.vim']
+    let g:scavenger_patterns = ['project.vim', 'rc.vim']
 
 The list above will then be filtered through a list of regular expressions:
 
-    let g:scavenger\_exclude = []
+    let g:scavenger_exclude = []
 
 If set to 1 the autocmd for :Scavange will not be defined, leaving you to customize this behavior at your own discretion:
 
-    g:scavenger\_manual\_only = 0
+    g:scavenger_manual_only = 0
 
 ### Mappings
 
