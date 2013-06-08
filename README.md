@@ -24,11 +24,13 @@ Can you add a feature I would like to see?
 
 Just place files that match your defined pattern somewhere in or up the path from any file you wish them to apply to.
 
+Will do the thing. It is by default set up to run on BufEnter autocmd. Of course it will not apply a resource file to itself:
+
     :Scavange 
-Will do the thing. It is by default set up to run on BufEnter autocmd.
+
+Will show a quick popup window with all the matched resource files currently in and up the path:
 
     :ScaFiles 
-Will show a quick popup window with all the matched resource files currently in and up the path.
 
 ### Options
 
@@ -42,6 +44,22 @@ The list above will then be filtered through a list of regular expressions:
 
     let g:scavenger_exclude = []
 
+The `g:scavenger_map` is a hash of which the key is a comma-separated list of patterns to match the file to be edited, and the value an array of glob patterns to be used in addition to the `g:scavenger_patterns`. The latter having been described, here is the syntax for the keys:
+
+- Files can be included by either an extension or the filetype
+- Files can be excluded the same way by prefixing a bang (!) to one of the above
+- If there is no extension, as in a shell script, the parser will understand an empty pattern
+- '\*' Matches all types, and is compatible with !.
+- Items to the right shadow those stated previously
+
+Example:
+
+    let g:scavenger_map = {
+        \'sh,pl,!' : '*shell.vim' " would include files test.sh, test.pl, but not test
+        \'vim,!vim,vim' : 'vim.vim' " would apply any vim.vim to test.vim
+        \'*' : 'myrc.vim' " would apply any myrc.vim to any file edited
+        \}
+
 If set to 1 the autocmd for :Scavange will not be defined, leaving you to customize this behavior at your own discretion:
 
     g:scavenger_manual_only = 0
@@ -52,7 +70,6 @@ There are none. Feel free to assign what works best for you--that's the scavenge
 
 ### ToDo
 
-- Add a dictionary option that would allow to specify search patterns for file types
 - Create a help file
 
 ### License

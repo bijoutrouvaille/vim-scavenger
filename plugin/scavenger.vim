@@ -14,7 +14,27 @@ endif
 
 if !exists('g:scavenger_patterns')
   " a list of glob patterns
-  let g:scavenger_patterns = ['project.vim', 'rc.vim'] 
+  let g:scavenger_patterns = ['rc.vim'] 
+endif
+
+if !exists('g:scavenger_map')
+  " a hash of matches
+  " 
+  " the key: should be a comma separated list which may include filetypes and
+  " extensions. It will be used to qualify the file to be edited for the globs
+  " listed in the value of the hash. If a list item is prefixed with a bang (!)
+  " then this filetype will be excluded from the list. Exclusions and
+  " inclusions shadow each other in order, so that a key 'vim,!vim,vim' will
+  " leave vim type included. There is also a special type * which includes all
+  " files. You can combine it with ! and have patterns like '*,!vim' to apply
+  " the pattern to all but vim files. Also files without an extension can be
+  " included with an empty space and excluded with a single bang, for example:
+  " 'sh,,bash' and 'sh,!'
+  "
+  " the value: a vim array of glob patterns, just like g:scavenger_patterns
+  let g:scavenger_map = {
+        \'*' : ['project.vim']
+        \}
 endif
 if !exists('g:scavenger_exclude')
   " a regular expression list
@@ -55,11 +75,16 @@ function! s:RFindRcFiles(dir, rcFiles)
       let l:dir = fnameescape(expand("%:p:h"))
     endif
   endif
-    
-  for pattern in g:scavenger_patterns
-    " prepend new files to the beginning of the list, so that outer files
-    " are executed first
-    call extend(l:rcFiles, s:FilterRcList(split(globpath(l:dir, pattern, 1), "\n")), 0)
+
+  let l:patternCollection = s:GetApplicableMapPatterns()
+  call add(l:patternCollection,g:scavenger_patterns)  
+
+  for patternList in l:patternCollection
+    for pattern in patternList
+      " prepend new files to the beginning of the list, so that outer files
+      " are executed first
+      call extend(l:rcFiles, s:FilterRcList(split(globpath(l:dir, pattern, 1), "\n")), 0)
+    endfor
   endfor
 
   if l:dir == "/"
@@ -77,7 +102,7 @@ endfunction
 function! s:IsExcluded(path)
 
   let l:path = fnamemodify(a:path,":p")
-  if  l:path==expand("%:p")
+  if  l:path==expand("%:p") " exclude if editing the rc file itself
     return 1
   endif
   for pattern in g:scavenger_exclude
@@ -88,6 +113,47 @@ function! s:IsExcluded(path)
   return 0
 endfunction
 
+function! s:DoesPatternApply(pattern, ext, ft)
+  
+  if empty(a:pattern) 
+    return 0
+  endif
+  
+  let l:included = 0
+  let l:exclusionFlag = 0
+  let l:noft = empty(a:ft)
+
+  for item in split(a:pattern,",")
+
+    if item[0]=='!'
+      let l:exclusionFlag = 1
+      let l:item = strpart(item,1)
+    else 
+      let l:exclusionFlag = 0
+      let l:item = item
+    endif
+
+    if l:item=='*' || l:item==a:ext || !l:noft && a:ft==l:item
+      let l:included = !l:exclusionFlag
+    endif
+  endfor
+  return l:included
+endfunction
+
+function! s:GetApplicableMapPatterns()
+  let l:res = []
+  let l:ft = &filetype
+  let l:ext = expand('%:e')
+  for [patterns,globs] in items(g:scavenger_map)
+    if s:DoesPatternApply(patterns, l:ext, l:ft)
+      call add(l:res,globs)
+    endif
+  endfor
+  return l:res
+endfunction
+     
+
+
 function! s:SourceRcFiles()
   let l:fs = s:FindRcFiles()
   for rcfile in l:fs
@@ -95,9 +161,6 @@ function! s:SourceRcFiles()
       exe ":source " . rcfile
     endif
   endfor
-endfunction
-
-function! s:ShowCtrlPList(fileList)
 endfunction
 
 function! s:Highlight(lineNumber)
