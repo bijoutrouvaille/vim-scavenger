@@ -264,12 +264,12 @@ function! s:ViewRcFiles()
 endfunction
 
   
-command! Scavange :call <SID>SourceRcFiles()
+command! Scavenge :call <SID>SourceRcFiles()
 command! ScaFiles :call <SID>ViewRcFiles()
 
 if !g:scavenger_manual_only
   augroup scavenger
     autocmd!
-    autocmd BufEnter * :Scavange
+    autocmd BufEnter * :Scavenge
   augroup END
 endif

@@ -26,7 +26,7 @@ Just place files that match your defined pattern somewhere in or up the path fro
 
 Will do the thing. It is by default set up to run on BufEnter autocmd. Of course it will not apply a resource file to itself:
 
-    :Scavange 
+    :Scavenge 
 
 Will show a quick popup window with all the matched resource files currently in and up the path:
 
@@ -60,7 +60,7 @@ Example:
         \'*' : 'myrc.vim' " would apply any myrc.vim to any file edited
         \}
 
-If set to 1 the autocmd for :Scavange will not be defined, leaving you to customize this behavior at your own discretion:
+If set to 1 the autocmd for :Scavenge will not be defined, leaving you to customize this behavior at your own discretion:
 
     g:scavenger_manual_only = 0
 
