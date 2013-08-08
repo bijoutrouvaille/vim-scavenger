@@ -16,6 +16,9 @@ if !exists('g:scavenger_patterns')
   " a list of glob patterns
   let g:scavenger_patterns = ['rc.vim'] 
 endif
+if !exists('g:scavenger_ft')
+  let g:scavenger_ft = 1
+endif
 
 if !exists('g:scavenger_map')
   " a hash of matches
@@ -57,7 +60,11 @@ endif
 " unsaved then current working directory.
 "
 function! s:FindRcFiles()
-  return s:RFindRcFiles("", [])
+  let l:ini = []
+  if g:scavenger_ft==1
+    let l:ini = s:FindFtFiles()
+  endif
+  return s:RFindRcFiles("", l:ini)
 endfunction
 
 function! s:RFindRcFiles(dir, rcFiles)
@@ -152,7 +159,16 @@ function! s:GetApplicableMapPatterns()
   return l:res
 endfunction
      
-
+function! s:FindFtFiles()
+  let l:fs = []
+  let l:home = fnamemodify($HOME.'/.vim/ftplugin/'.&ft.'.vim', ':p')
+  if filereadable(l:home)
+    call add(l:fs, l:home)
+  else
+    echom l:home." l:home not found"
+  endif
+  return l:fs
+endfunction
 
 function! s:SourceRcFiles()
   let l:fs = s:FindRcFiles()
