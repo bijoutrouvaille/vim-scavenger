@@ -164,8 +164,6 @@ function! s:FindFtFiles()
   let l:home = fnamemodify($HOME.'/.vim/ftplugin/'.&ft.'.vim', ':p')
   if filereadable(l:home)
     call add(l:fs, l:home)
-  else
-    echom l:home." l:home not found"
   endif
   return l:fs
 endfunction

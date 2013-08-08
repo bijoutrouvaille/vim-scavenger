@@ -64,6 +64,10 @@ If set to 1 the autocmd for :Scavenge will not be defined, leaving you to custom
 
     g:scavenger_manual_only = 0
 
+Scavenger will by default pick up filetype files in your $HOME/.vim/ftplugin folder, but you can disable it by specifying
+
+    let g:scavenger_ft = 0
+
 ### Mappings
 
 There are none. Feel free to assign what works best for you--that's the scavenger way.
