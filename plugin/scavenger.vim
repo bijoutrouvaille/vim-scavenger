@@ -9,7 +9,7 @@
 if !exists("g:loaded_scavenger")
   let g:loaded_scavenger = 1
 else 
-  " finish
+  finish
 endif 
 
 if !exists('g:scavenger_patterns')
@@ -68,7 +68,6 @@ function! s:FindRcFiles()
 endfunction
 
 function! s:RFindRcFiles(dir, rcFiles)
-
   let l:rcFiles = copy(a:rcFiles)
   let l:dir = a:dir
   if empty(l:dir)
@@ -78,8 +77,12 @@ function! s:RFindRcFiles(dir, rcFiles)
       return l:rcFiles
     elseif empty(expand("%"))
       let l:dir = getcwd()
+      echo "cwd ".l:dir
     else 
       let l:dir = fnameescape(expand("%:p:h"))
+      if l:dir[0]!='~' && l:dir[0]!='/'
+        let l:dir = getcwd() . "/" . l:dir
+      endif
     endif
   endif
 
