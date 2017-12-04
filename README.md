@@ -1,6 +1,6 @@
 ## scavenger.vim
 
-This plugin will eat your dead options and convert them into digestable resources...
+This plugin will eat your dead configurations and convert them into digestible resources...
 
 The biology of the process is really quite simple: instead of having all of your options set in the same tumid and mutated, poor .vimrc file, you would create a resource file in: your project folder, in a folder that holds all of your code, in a folder that holds other stuff that you edit with vim, or in subfolders of that, if you'd like.
 
