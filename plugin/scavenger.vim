@@ -77,7 +77,6 @@ function! s:RFindRcFiles(dir, rcFiles)
       return l:rcFiles
     elseif empty(expand("%"))
       let l:dir = getcwd()
-      echo "cwd ".l:dir
     else 
       let l:dir = fnameescape(expand("%:p:h"))
       if l:dir[0]!='~' && l:dir[0]!='/'
