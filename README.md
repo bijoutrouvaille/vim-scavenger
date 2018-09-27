@@ -1,8 +1,8 @@
 ## scavenger.vim
 
-This plugin will eat your dead options and convert them into digestable resources...
+This plugin will eat your dead configurations and convert them into digestible resources...
 
-The biology of the process is really quite simple: instead of having all of your options set in the same tumid and mutated poor .vimrc file, you would create a resource file in: your project folder, in a folder that holds all of your code, in a folder that holds other stuff that you edit with vim, and in subfolders of that, if you'd like.
+The biology of the process is really quite simple: instead of having all of your options set in the same tumid and mutated, poor .vimrc file, you would create a resource file in: your project folder, in a folder that holds all of your code, in a folder that holds other stuff that you edit with vim, or in subfolders of that, if you'd like.
 
 It traverses up the tree, starting from the current file's directory and sources each file that matches a pattern. It does so in the order of outer to inner, so as to shadow more general files with the more immediate ones.
 
@@ -10,7 +10,7 @@ It traverses up the tree, starting from the current file's directory and sources
 
 Wouldn't you get confused as to where you keep all your options?
 
--- Unlikely. There is a handy window that will popup on command to let you quickly view and edit any resource files that apply to the current one.
+-- Unlikely. There is a handy window that will popup on command to let you quickly view and edit any resource files that apply to the currently edited one.
 
 Isn't there another project that does the same thing?
 
@@ -18,13 +18,17 @@ Isn't there another project that does the same thing?
 
 Can you add a feature I would like to see?
 
--- It's possible, please create an issue and we can discuss it.
+-- It's possible. Please create an issue, and we can discuss it.
+
+### Installation
+
+Pathogen and most vim package managers should work.
 
 ### Usage
 
-Just place files that match your defined pattern somewhere in or up the path from any file you wish them to apply to.
+Just place files that match your defined pattern somewhere within or up the path from any file you wish them to apply to.
 
-Will do the thing. It is by default set up to run on BufEnter autocmd. Of course it will not apply a resource file to itself:
+Will do the thing. It is by default set up to run on `BufEnter` autocmd. Of course, it will not apply a resource file to itself:
 
     :Scavenge 
 
@@ -34,29 +38,29 @@ Will show a quick popup window with all the matched resource files currently in 
 
 ### Options
 
-Below are the options that you can put in your .vimrc to overwrite the defaults shown here, after the equals sign.
+Below are the options that you can put in your .vimrc to overwrite the *defaults* shown here, after the equals sign.
 
 A list of glob file patterns which will be searched for:
 
     let g:scavenger_patterns = ['project.vim', 'rc.vim']
 
-The list above will then be filtered through a list of regular expressions:
+The list above will then be filtered through the below list of regular expressions:
 
     let g:scavenger_exclude = []
 
-The `g:scavenger_map` is a hash of which the key is a comma-separated list of patterns to match the file to be edited, and the value an array of glob patterns to be used in addition to the `g:scavenger_patterns`. The latter having been described, here is the syntax for the keys:
+The `g:scavenger_map` is a hash of which the key is a comma-separated list of patterns to match the file to be edited, and the value an array of glob patterns to be used in addition to the `g:scavenger_patterns`. The latter having been described above, here is the syntax for the keys:
 
 - Files can be included by either an extension or the filetype
-- Files can be excluded the same way by prefixing a bang (!) to one of the above
+- Files can be excluded the same way by prefixing a bang (`!`) to one of the above
 - If there is no extension, as in a shell script, the parser will understand an empty pattern
-- '\*' Matches all types, and is compatible with !.
-- Items to the right shadow those stated previously
+- `\*` Matches all types, and is compatible with `!`.
+- Items to the right shadow those stated previously.
 
 Example:
 
     let g:scavenger_map = {
-        \'sh,pl,!' : '*shell.vim' " would include files test.sh, test.pl, but not test
-        \'vim,!vim,vim' : 'vim.vim' " would apply any vim.vim to test.vim
+        \'sh,pl,!' : '*shell.vim' " example: would include files "test.sh", "test.pl", but not "test"
+        \'vim,!vim,vim' : 'vim.vim' " example: would apply any vim.vim found in tree to test.vim
         \'*' : 'myrc.vim' " would apply any myrc.vim to any file edited
         \}
 
@@ -68,11 +72,11 @@ Scavenger will by default pick up filetype files in your $HOME/.vim/ftplugin fol
 
     let g:scavenger_ft = 0
 
-### Mappings
+### Key Mappings
 
 There are none. Feel free to assign what works best for you--that's the scavenger way.
 
-### ToDo
+### To Do
 
 - Create a help file
 
